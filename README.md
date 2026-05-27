@@ -1,32 +1,41 @@
-# Renewable Energy Smart Metering System Using LoRa Network
+#include <SPI.h>
+#include <LoRa.h>
 
-IEEE Publication Project
+#define voltageSensor A0
+#define currentSensor A1
 
-## Technologies Used
-- Arduino UNO
-- NodeMCU ESP8266
-- LoRa SX1278
-- IoT
-- Python Flask
+float voltage = 0;
+float current = 0;
+float power = 0;
 
-## Features
-- Renewable energy monitoring
-- Long-range LoRa communication
-- Real-time voltage and current monitoring
-- IoT-based remote monitoring
+void setup() {
+  Serial.begin(9600);
 
-## Components
-- Arduino UNO
-- NodeMCU
-- LoRa Module
-- Voltage Sensor
-- Current Sensor
-- PV Panel
+  LoRa.setPins(10, 9, 2);
 
-## Authors
-- Vaddepally Punith Kumar
-- Sirimaram Mahidhar
-- Kudithipudi Dhanveer
+  if (!LoRa.begin(433E6)) {
+    Serial.println("LoRa init failed");
+    while (1);
+  }
 
-## IEEE Publication
-A Renewable Energy Smart Metering System Using LoRa Network
+  Serial.println("LoRa Transmitter Started");
+}
+
+void loop() {
+  int voltageValue = analogRead(voltageSensor);
+  int currentValue = analogRead(currentSensor);
+
+  voltage = (voltageValue * 5.0 / 1023.0) * 5;
+  current = (currentValue * 5.0 / 1023.0);
+  power = voltage * current;
+
+  String data = String(voltage) + "," + String(current) + "," + String(power);
+
+  Serial.println(data);
+
+  LoRa.beginPacket();
+  LoRa.print(data);
+  LoRa.endPacket();
+
+  delay(2000);
+}
