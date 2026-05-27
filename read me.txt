@@ -1,0 +1,35 @@
+# Renewable Energy Smart Metering System Using LoRa Network
+
+IEEE Publication Project
+
+## Project Overview
+This project presents a renewable energy smart metering system using LoRa communication. The system monitors voltage and current from a PV panel and transmits the sensor data through LoRa from a transmitter node to a receiver data node.
+
+## Technologies Used
+- Arduino UNO
+- NodeMCU ESP8266
+- LoRa SX1278
+- Voltage Sensor
+- Current Sensor
+- PV Panel
+- Arduino IDE
+- IoT
+
+## System Architecture
+- Transmitter Node: Arduino UNO + Voltage Sensor + Current Sensor + LoRa TX
+- Receiver Node: NodeMCU ESP8266 + LoRa RX + WiFi/IoT Monitoring
+
+## Features
+- Real-time voltage monitoring
+- Real-time current monitoring
+- Power calculation
+- Long-range LoRa communication
+- Low-power renewable energy monitoring
+
+## Authors
+- Vaddepally Punith Kumar
+- Sirimaram Mahidhar
+- Kudithipudi Dhanveer
+
+## Publication
+A Renewable Energy Smart Metering System Using LoRa Network

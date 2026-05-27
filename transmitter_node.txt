@@ -1,0 +1,41 @@
+#include <SPI.h>
+#include <LoRa.h>
+
+#define voltageSensor A0
+#define currentSensor A1
+
+float voltage = 0;
+float current = 0;
+float power = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  LoRa.setPins(10, 9, 2);
+
+  if (!LoRa.begin(433E6)) {
+    Serial.println("LoRa init failed");
+    while (1);
+  }
+
+  Serial.println("LoRa Transmitter Started");
+}
+
+void loop() {
+  int voltageValue = analogRead(voltageSensor);
+  int currentValue = analogRead(currentSensor);
+
+  voltage = (voltageValue * 5.0 / 1023.0) * 5;
+  current = (currentValue * 5.0 / 1023.0);
+  power = voltage * current;
+
+  String data = String(voltage) + "," + String(current) + "," + String(power);
+
+  Serial.println(data);
+
+  LoRa.beginPacket();
+  LoRa.print(data);
+  LoRa.endPacket();
+
+  delay(2000);
+}

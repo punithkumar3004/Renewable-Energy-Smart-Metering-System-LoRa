@@ -1,0 +1,46 @@
+#include <SPI.h>
+#include <LoRa.h>
+#include <ESP8266WiFi.h>
+
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+void setup() {
+  Serial.begin(9600);
+
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting to WiFi");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.println("WiFi Connected");
+
+  LoRa.setPins(D8, D0, D1);
+
+  if (!LoRa.begin(433E6)) {
+    Serial.println("LoRa init failed");
+    while (1);
+  }
+
+  Serial.println("LoRa Receiver Started");
+}
+
+void loop() {
+  int packetSize = LoRa.parsePacket();
+
+  if (packetSize) {
+    String data = "";
+
+    while (LoRa.available()) {
+      data += (char)LoRa.read();
+    }
+
+    Serial.print("Received Data: ");
+    Serial.println(data);
+  }
+}
